@@ -2,14 +2,14 @@
 Rainfall prediction in Australia using Machine learning 
 
 
-1. Introduction
+**1. Introduction**
 
 Weather is a significant external phenomenon that can not be controlled and affects our lives in various ways. From the early days of the cavemen era, predicting weather has been deemed as one of the biggest mysteries to solve since it aided in farming, water supply, safety, and increased success in gathering food necessary for survival. In the current times, aside from helping us to determine how to dress the next morning, many businesses and industries are greatly dependent on weather to prolong their survival. Farmers and gardeners plan for crop irrigation and protection, construction companies can better understand when to pour concrete before or ahead of a heavy rain, amusement parks need to take action on how to serve visitors during rainy or snowy weather, among others. Though the result can not be averted, we can try to predict weather more accurately with the latest technological advancement.
 
 Australia's weather and climate are changing in response to global warming. Previous events such as the bushfire in 2019-2020 captured the world’s attention on the nation’s extreme weather conditions due to human interference. Because of its vast land mass and climate difference, Australia’s weather can vary significantly from location to location. The goal of this project is to predict, using the dataset “Rain in Australia” from Kaggle, whether there will be rain next day in Australia. We opted to use a mix of classification models and logistic regression on a target variable (RainTommorow) using supervised learning models. Our project uses several data mining models including sklearn decision tree (benchmark), boosted decision trees: XGBoost and LightGBM decision tree, and logistic regression. to learn the patterns of Australia’s weather and performance evaluation metrics such as precision, recall, and AUC. 
 
 
-2. Data Understanding
+**2. Data Understanding**
 
 Our dataset is sourced from Kaggle: https://www.kaggle.com/jsphyg/weather-dataset-rattle-package
 The dataset contains 23 columns and 145,460 entries divided into 49 locations with each location having around 3,000 entries. Summary of important attributes are as follows:
@@ -72,7 +72,7 @@ The entries are indexed by dates as early as October 2007 up to May 2017. Howeve
 
 One of the major issues was that a few columns have several missing values. Sunshine has 48% missing values, Evaporation 43%, Sunshine 48%, Cloud9am 38%, Cloud3pm 40%, and are generally location-specific such as in Newcastle, Mount Ginini, Salmon Gums, due to the locations not having such sensors. We decided not to drop these attributes, as it is highly correlated with label RainTomorrow compared to other features as seen in the correlation heatmap, such as Sunshine has negative 0.45 correlation, Cloud3pm has 0.38 correlation, and Evaporation negative 0.12 correlation. 
 
-3. Data Preprocessing
+**3. Data Preprocessing**
 
 1) Filling in null values
 There are two approaches in filling in the null values, with the first one being much more simple. However,  we will later show that the second approach will lead to better model performance.
@@ -98,8 +98,7 @@ The dataset contains 16 numerical features (eg. MinTemp, MaxTemp, Rainfall) in t
 3) Categorical feature encoding
 Since RainToday and RainTomorrow have ‘object’ as data type, we applied One-hot encoding by creating dummy variables and dropping the original column (1 for Yes, 0 for No). There are features such as ‘WindGustDir ', ‘WindDir9am’ that contains 16 different values of wind direction (north (N), north-northeast (NNE), northeast (NE), east-northeast (ENE), etc). Instead of creating 15 more columns for each feature, we implement categorical encoding according to each number’s presence in a scale out of 3 to capture the dimension difference. 
 
-
-4. Model Building
+**4. Model Building**
 
 After dropping, the dataset has 22% positive labels (rain tomorrow) and 78% negative labels (no rain). Our benchmark for this project is 78% accuracy, as the majority classifier will get a 78% result if no data preprocessing and modeling is done. 
 
@@ -135,7 +134,7 @@ where betas are the coefficients of the independent variable respectively.
 Logistic regression is highly prone to overfitting problems. This is because by including more independent variables to the logistic regression model is highly likely to increase the accuracy. However, the improvement in the accuracy is at cost of reducing the generalizability of the model, and thus overfitting is resulted. Hence, in our model, the independent variables with feature importance less than 0.5 are dropped with not significantly affect the accuracy. 
 
 
-5. Performance Evaluation
+**5. Performance Evaluation**
 
 To evaluate whether our data preprocessing efforts improve the model, we splitted the dataset into training and testing sets and we evaluate the model performance using the testing set. There are 4 cases we tried in each model in terms of how to fill in null values and how training and testing set are split:
 
@@ -181,7 +180,7 @@ The model’s accuracy, precision and recall are generally higher when we fill n
 For case 3, the ROC curve has an area under the curve of 0.873, which is very close to LightGBM model’s performance. It also curves towards the top left corner, which is ideal.
 
 
-Summary of Results
+**Summary of Results**
 
 In summary, case 4 from LightGBM boosted decision tree model has the best performance:
 
@@ -284,7 +283,7 @@ The 2 main parameters that we tuned were:
 Solver: we selected the ‘newton-cg’ solver since it performed the best out of the other methods which included, liblinear’, ‘lbfgs’, ‘sag’, and ‘saga’ after gridsearchcv
 Penalty: We used L2 for the penalty, after deploying grid search cv.
 
-7. Further Improvements
+**7. Further Improvements**
 
 In this research, the model was formulated for predicting rain probability in generalized climatology. However, different locations have their unique microclimate system, which might affect the rain process. Hence, there should be a locational dependence for the rain probability. For the future improvement, we can do clustering for the location with similar patterns in the climatology dataset, and build different models based on the microclimate clusters. We did run a KMeans cluster for our models to check whether we could improve the accuracy, however since the dataset is fairly limited (with only 23 columns) and several other factors need to be taken into account for microclimatic clusters, the clustering did not improve the accuracy of our model. 
 
