@@ -1,5 +1,5 @@
 # RainfallPrediction
-Rainfall prediction in Australia using Machine learning 
+Rainfall prediction in Australia using Machine learning (worked with teammates Anson, Vanessa and Peter of HKUST)
 
 
 **1. Introduction**
